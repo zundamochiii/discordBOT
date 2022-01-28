@@ -14,7 +14,7 @@ f.close()
 with open('config.yaml','r') as yml:
     config = yaml.safe_load(yml)
 TOKEN =config['botconfig']['appTOKEN']
-CHANNEL_ID =config['botconfig']['zundaCHANNEL_ID']
+CHANNEL_ID =config['botconfig']['messageCHANNEL_ID']
 
 
 client = discord.Client()
@@ -25,9 +25,13 @@ async def greetings():#挨拶
 
 
 class Myclass:
-    letters =["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     flag = 0
     gamecount = 0
+    def __init__(self):
+        self.letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+        self.flag = 0
+        self.gamecount = 0
 
 async def greetings():#挨拶
     channel = client.get_channel(CHANNEL_ID)
@@ -62,7 +66,7 @@ async def on_message(message:discord.Message):
                 return True
             try:
                 # wait_forを用いて、イベントが発火し指定した条件を満たすまで待機する
-                inpcha = await client.wait_for('message', check=check, timeout=60)
+                inpcha = await client.wait_for('message', check=check, timeout=90)
             except asyncio.TimeoutError:
                 await message.channel.send(f'{message.author.mention}さん、時間切れです')
                 trial.gamecount = trial.gamecount+1
@@ -91,6 +95,7 @@ async def on_message(message:discord.Message):
                     trial.flag = 1
                 trial.gamecount = trial.gamecount+1
         await message.channel.send("Game has finished.")
+        return
 
 
 
