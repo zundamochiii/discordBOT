@@ -91,10 +91,10 @@ async def on_message(message:discord.Message):
                     await message.channel.send(f"Correcting:{letterlist}")
                     await message.channel.send(f"Remaining letters:{' '.join(trial.letters)}")
                 else:
-                    await message.channel.send(f"Answer is {''.join(answer)}.")
                     trial.flag = 1
                 trial.gamecount = trial.gamecount+1
         await message.channel.send("Game has finished.")
+        await message.channel.send(f"Answer is {''.join(answer)}.")
         return
 
 
