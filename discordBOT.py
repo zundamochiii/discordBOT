@@ -2,14 +2,19 @@
 import discord
 import asyncio
 import random
+import yaml
 
+#ファイルからの読み出し
+f = open("./list.txt","r")
+list_row = []
+for x in f:
+    list_row.append(x.rstrip("\n"))
+f.close()
 
-
-bot = discord.Client()
-# Botのアクセストークン
-
-TOKEN=(PUT YOUR TOKEN)
-CHANNEL_ID = (IF YOU WANT)
+with open('config.yaml','r') as yml:
+    config = yaml.safe_load(yml)
+TOKEN =config['botconfig']['appTOKEN']
+CHANNEL_ID =config['botconfig']['zundaCHANNEL_ID']
 
 
 client = discord.Client()
@@ -17,8 +22,10 @@ async def greetings():#挨拶
     channel = client.get_channel(CHANNEL_ID)
     await channel.send('こんにちは！')
 
+
+
 class Myclass:
-    letters =["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    letters =["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     flag = 0
     gamecount = 0
 
@@ -44,10 +51,11 @@ async def on_message(message:discord.Message):
 
     if message.content == '/wordle':
         trial = Myclass()
-        answer = "legal"
+        answer = random.choice(list_row)
+        print(f"answer:{answer}")
 
         while (trial.flag == 0 and trial.gamecount <6):
-            await message.channel.send("input words here:")
+            await message.channel.send(f"take{trial.gamecount+1}/6 input words here:")
             def check(m):
                 #return len(message.content) == 5
                 print(m.content)
